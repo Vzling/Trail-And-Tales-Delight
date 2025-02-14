@@ -1,20 +1,20 @@
 package show.tatd.mod.block;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.WorldAccess;
 import show.tatd.mod.init.ModBlock;
 import vectorwing.farmersdelight.common.block.FeastBlock;
 import vectorwing.farmersdelight.common.utility.TextUtils;
@@ -22,40 +22,41 @@ import vectorwing.farmersdelight.common.utility.TextUtils;
 import java.util.function.Supplier;
 
 public class CookedSnifferEggBlock extends FeastBlock {
-    protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 2.0D, 15.0D, 12.0D, 14.0D);
+    protected static final VoxelShape SHAPE = Block.createCuboidShape(1.0D, 0.0D, 2.0D, 15.0D, 12.0D, 14.0D);
 
-    public CookedSnifferEggBlock(Properties properties, Supplier<Item> servingItem, boolean hasLeftovers) {
-        super(properties.noOcclusion().isRedstoneConductor((bs, br, bp) -> false), servingItem, hasLeftovers);
+    public CookedSnifferEggBlock(AbstractBlock.Settings properties, Supplier<Item> servingItem, boolean hasLeftovers) {
+        super(properties.nonOpaque().solidBlock((bs, br, bp) -> false), servingItem, hasLeftovers);
     }
-    protected ItemInteractionResult takeServing(LevelAccessor levelacc, BlockPos pos, BlockState state, Player player, InteractionHand hand) {
-        int servings = state.getValue(getServingsProperty());
+
+    protected ItemActionResult takeServing(WorldAccess levelacc, BlockPos pos, BlockState state, PlayerEntity player, Hand hand) {
+        int servings = state.get(getServingsProperty());
         ItemStack serving = this.getServingItem(state);
-        ItemStack heldStack = player.getItemInHand(hand);
+        ItemStack heldStack = player.getStackInHand(hand);
 
         if (servings > 3) {
-            if (!serving.hasCraftingRemainingItem() || ItemStack.isSameItem(heldStack, serving.getCraftingRemainingItem())) {
-                levelacc.setBlock(pos, state.setValue(getServingsProperty(), servings - 1), 3);
-                if (!player.getAbilities().instabuild && serving.hasCraftingRemainingItem()) {
-                    heldStack.shrink(1);
+            if (!serving.getItem().hasRecipeRemainder() || ItemStack.areItemsEqual(heldStack, serving.getItem().getRecipeRemainder(serving))) {
+                levelacc.setBlockState(pos, state.with(getServingsProperty(), servings - 1), 3);
+                if (!player.getAbilities().creativeMode && serving.getItem().getRecipeRemainder(serving).isEmpty()) {
+                    heldStack.decrement(1);
                 }
-                if (!player.getInventory().add(serving)) {
-                    player.drop(serving, false);
+                if (!player.getInventory().insertStack(serving)) {
+                    player.dropItem(serving, false);
                 }
-                if (levelacc.getBlockState(pos).getValue(getServingsProperty()) == 0 && !this.hasLeftovers) {
+                if (levelacc.getBlockState(pos).get(getServingsProperty()) == 0 && !this.hasLeftovers) {
                     levelacc.removeBlock(pos, false);
                 }
-                levelacc.playSound(null, pos, SoundEvents.ARMOR_EQUIP_GENERIC.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                levelacc.setBlock(BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()), ModBlock.SNIFFER_EGGSHELL.get().defaultBlockState(), 3);
-                return ItemInteractionResult.SUCCESS;
+                levelacc.playSound(null, pos, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC.value(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+                levelacc.setBlockState(BlockPos.ofFloored(pos.getX(), pos.getY(), pos.getZ()), ModBlock.SNIFFER_EGGSHELL.getDefaultState(), 3);
+                return ItemActionResult.SUCCESS;
             } else {
-                player.displayClientMessage(TextUtils.getTranslation("block.feast.use_container", serving.getCraftingRemainingItem().getHoverName()), true);
+                player.sendMessage(TextUtils.getTranslation("block.feast.use_container", serving.getItem().getRecipeRemainder(serving).getName()), true);
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView level, BlockPos pos, ShapeContext context) {
         return SHAPE;
     }
 }

@@ -1,34 +1,32 @@
 package show.tatd.mod.block;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.CommonHooks;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
+import org.jetbrains.annotations.Nullable;
 import show.tatd.mod.init.ModBlock;
 import show.tatd.mod.init.ModItem;
 import vectorwing.farmersdelight.common.Configuration;
@@ -37,79 +35,76 @@ import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
-import javax.annotation.Nullable;
-
 @SuppressWarnings("deprecation")
 public class LanternFruitVineBlock extends CropBlock {
-    public static final IntegerProperty VINE_AGE = BlockStateProperties.AGE_3;
-    public static final BooleanProperty ROPELOGGED = BooleanProperty.create("ropelogged");
-    private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+    public static final IntProperty VINE_AGE = Properties.AGE_3;
+    public static final BooleanProperty ROPELOGGED = BooleanProperty.of("ropelogged");
+    private static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
-    public LanternFruitVineBlock(Properties properties) {
+    public LanternFruitVineBlock(AbstractBlock.Settings properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(getAgeProperty(), 0).setValue(ROPELOGGED, false));
+        setDefaultState(stateManager.getDefaultState().with(getAgeProperty(), 0).with(ROPELOGGED, false));
     }
 
-    public static void destroyAndPlaceRope(Level level, BlockPos pos) {
-        Block configuredRopeBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(Configuration.DEFAULT_TOMATO_VINE_ROPE.get()));
+    public static void destroyAndPlaceRope(World level, net.minecraft.util.math.BlockPos pos) {
+        Block configuredRopeBlock = Registries.BLOCK.get(Identifier.tryParse(Configuration.DEFAULT_TOMATO_VINE_ROPE.get()));
         Block finalRopeBlock = configuredRopeBlock != null ? configuredRopeBlock : ModBlocks.ROPE.get();
 
-        level.setBlockAndUpdate(pos, finalRopeBlock.defaultBlockState());
+        level.setBlockState(pos, finalRopeBlock.getDefaultState());
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        int age = state.getValue(getAgeProperty());
+    protected ActionResult onUse(BlockState state, World level, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        int age = state.get(getAgeProperty());
         boolean isMature = age == getMaxAge();
-        if (!isMature && player.getItemInHand(hand).is(Items.BONE_MEAL)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!isMature && player.getStackInHand(Hand.MAIN_HAND).getItem().equals(Items.BONE_MEAL)) {
+            return ActionResult.PASS;
         } else if (isMature) {
             int quantity = 1 + level.random.nextInt(2);
-            popResource(level, pos, new ItemStack(ModItem.LANTERN_FRUIT.get(), quantity));
-            level.playSound(null, pos, ModSounds.ITEM_TOMATO_PICK_FROM_BUSH.get(), SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+            dropStack(level, pos, new ItemStack(ModItem.LANTERN_FRUIT, quantity));
+            level.playSound(null, pos, ModSounds.ITEM_TOMATO_PICK_FROM_BUSH.get(), SoundCategory.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
             if (level.random.nextFloat() < 0.05) {
-                popResource(level, pos, new ItemStack(ModItem.GOLDEN_LANTERN_FRUIT.get()));
-                level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+                dropStack(level, pos, new ItemStack(ModItem.GOLDEN_LANTERN_FRUIT));
+                level.playSound(null, pos, SoundEvents.BLOCK_AMETHYST_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
             }
 
-            level.setBlock(pos, state.setValue(getAgeProperty(), 0), 2);
-            return ItemInteractionResult.SUCCESS;
+            level.setBlockState(pos, state.with(getAgeProperty(), 0), 2);
+            return ActionResult.SUCCESS;
         } else {
-            return super.useItemOn(stack, state, level, pos, player, hand, hit);
+            return super.onUse(state, level, pos, player, hit);
         }
     }
 
-    public boolean isRandomlyTicking(BlockState state) {
+    public boolean hasRandomTicks(BlockState state) {
         return true;
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!level.isAreaLoaded(pos, 1)) return;
-        if (level.getRawBrightness(pos, 0) >= 9) {
+    public void randomTick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+        if (!level.isChunkLoaded(pos)) return;
+        if (level.getBaseLightLevel(pos, 0) >= 9) {
             int age = this.getAge(state);
             if (age < this.getMaxAge()) {
-                float speed = getGrowthSpeed(this.defaultBlockState(), level, pos);
-                if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / speed) + 1) == 0)) {
-                    level.setBlock(pos, state.setValue(getAgeProperty(), age + 1), 2);
-                    CommonHooks.fireCropGrowPost(level, pos, state);
+                float speed = getAvailableMoisture(this, level, pos);
+                if (random.nextInt((int) (25.0F / speed) + 1) == 0) {
+                    level.setBlockState(pos, state.with(getAgeProperty(), age + 1), 2);
                 }
             }
             attemptRopeClimb(level, pos, random);
         }
     }
 
-    public void attemptRopeClimb(ServerLevel level, BlockPos pos, RandomSource random) {
+    public void attemptRopeClimb(ServerWorld level, BlockPos pos, Random random) {
         if (random.nextFloat() < 0.3F) {
-            BlockPos posAbove = pos.above();
+            BlockPos posAbove = pos.up();
             BlockState stateAbove = level.getBlockState(posAbove);
-            boolean canClimb = Configuration.ENABLE_TOMATO_VINE_CLIMBING_TAGGED_ROPES.get() ? stateAbove.is(ModTags.ROPES) : stateAbove.is(ModBlocks.ROPE.get());
+            boolean canClimb = Configuration.ENABLE_TOMATO_VINE_CLIMBING_TAGGED_ROPES.get() ? stateAbove.isIn(ModTags.ROPES) : stateAbove.equals(ModBlocks.ROPE);
             if (canClimb) {
                 int vineHeight;
-                for (vineHeight = 1; level.getBlockState(pos.below(vineHeight)).is(this); ++vineHeight) {
+                for (vineHeight = 1; level.getBlockState(pos.down(vineHeight)).getBlock().equals(this); ++vineHeight) {
                 }
                 if (vineHeight < 3) {
-                    level.setBlockAndUpdate(posAbove, defaultBlockState().setValue(ROPELOGGED, true));
+                    level.setBlockState(posAbove, getDefaultState().with(ROPELOGGED, true));
                 }
             }
         }
@@ -117,17 +112,17 @@ public class LanternFruitVineBlock extends CropBlock {
     }
 
     @Override
-    public BlockState getStateForAge(int age) {
-        return this.defaultBlockState().setValue(this.getAgeProperty(), age);
+    public BlockState withAge(int age) {
+        return this.getDefaultState().with(this.getAgeProperty(), age);
     }
 
     @Override
-    public IntegerProperty getAgeProperty() {
+    public IntProperty getAgeProperty() {
         return VINE_AGE;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView level, BlockPos pos, ShapeContext context) {
         return SHAPE;
     }
 
@@ -137,57 +132,57 @@ public class LanternFruitVineBlock extends CropBlock {
     }
 
     @Override
-    protected ItemLike getBaseSeedId() {
-        return ModItem.LANTERN_FRUIT_SEEDS.get();
+    protected ItemConvertible getSeedsItem() {
+        return ModItem.LANTERN_FRUIT_SEEDS;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(VINE_AGE, ROPELOGGED);
     }
 
     @Override
-    protected int getBonemealAgeIncrease(Level level) {
-        return super.getBonemealAgeIncrease(level) / 2;
+    protected int getGrowthAmount(World level) {
+        return super.getGrowthAmount(level) / 2;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        int newAge = this.getAge(state) + this.getBonemealAgeIncrease(level);
+    public void grow(ServerWorld level, Random random, BlockPos pos, BlockState state) {
+        int newAge = this.getAge(state) + this.getGrowthAmount(level);
         int maxAge = this.getMaxAge();
         if (newAge > maxAge) {
             newAge = maxAge;
         }
 
-        level.setBlockAndUpdate(pos, state.setValue(getAgeProperty(), newAge));
+        level.setBlockState(pos, state.with(getAgeProperty(), newAge));
         attemptRopeClimb(level, pos, random);
     }
 
     @Override
-    public boolean isLadder(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {
-        return state.getValue(ROPELOGGED) && state.is(BlockTags.CLIMBABLE);
+    public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
+        return super.isFertilizable(world, pos, state);
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos belowPos = pos.below();
+    public boolean canPlaceAt(BlockState state, WorldView level, BlockPos pos) {
+        BlockPos belowPos = pos.down();
         BlockState belowState = level.getBlockState(belowPos);
 
-        if (state.getValue(ROPELOGGED)) {
-            return belowState.is(ModBlock.LANTERN_FRUIT_CROP.get()) && hasGoodCropConditions(level, pos);
+        if (state.get(ROPELOGGED)) {
+            return belowState.getBlock().equals(ModBlock.LANTERN_FRUIT_CROP) && hasGoodCropConditions(level, pos);
         }
 
-        return super.canSurvive(state, level, pos);
+        return super.canPlaceAt(state, level, pos);
     }
 
-    public boolean hasGoodCropConditions(LevelReader level, BlockPos pos) {
-        return level.getRawBrightness(pos, 0) >= 8 || level.canSeeSky(pos);
+    public boolean hasGoodCropConditions(WorldView level, BlockPos pos) {
+        return level.getBaseLightLevel(pos, 0) >= 8 || level.isSkyVisible(pos);
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
-        boolean isRopelogged = state.getValue(ROPELOGGED);
-        super.playerDestroy(level, player, pos, state, blockEntity, stack);
+    public void afterBreak(World level, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
+        boolean isRopelogged = state.get(ROPELOGGED);
+        super.afterBreak(level, player, pos, state, blockEntity, stack);
 
         if (isRopelogged) {
             destroyAndPlaceRope(level, pos);
@@ -195,19 +190,19 @@ public class LanternFruitVineBlock extends CropBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (!state.canSurvive(level, currentPos)) {
-            level.scheduleTick(currentPos, this, 1);
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState facingState, WorldAccess level, BlockPos currentPos, BlockPos facingPos) {
+        if (!state.canPlaceAt(level, currentPos)) {
+            level.scheduleBlockTick(currentPos, this, 1);
         }
 
         return state;
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!state.canSurvive(level, pos)) {
-            level.destroyBlock(pos, true);
-            if (state.getValue(ROPELOGGED)) {
+    public void scheduledTick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+        if (!state.canPlaceAt(level, pos)) {
+            level.breakBlock(pos, true);
+            if (state.get(ROPELOGGED)) {
                 destroyAndPlaceRope(level, pos);
             }
         }

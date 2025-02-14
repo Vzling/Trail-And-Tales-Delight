@@ -1,0 +1,20 @@
+{
+  "type": "farmersdelight:cooking",
+  "cookingtime": 100,
+  "experience": 0.8,
+  "ingredients": [
+    {
+      "item": "trailandtales_delight:cheese_slice"
+    },
+    {
+      "item": "trailandtales_delight:cherry_petal"
+    },
+    {
+        "item": "minecraft:sugar"
+      }
+  ],
+  "recipe_book_tab": "misc",
+  "result": {
+    "id": "trailandtales_delight:cherry_cheese_slice"
+  }
+}

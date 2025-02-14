@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:wheat"
+    },
+    "c": {
+      "item": "trailandtales_delight:cherry_petal"
+    },
+    "O": {
+      "item": "farmersdelight:pie_crust"
+    },
+    "a": {
+      "item": "trailandtales_delight:cheese_slice"
+    },
+    "x": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "pattern": [
+    "#c#",
+    "aca",
+    "xOx"
+  ],
+  "result": {
+    "id": "trailandtales_delight:cherry_cheese_pie"
+  },
+  "show_notification": true
+}

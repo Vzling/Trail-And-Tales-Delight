@@ -1,41 +1,45 @@
 package show.tatd.mod.item;
 
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
-import show.tatd.mod.TrailAndTalesDelightMod;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.ToolMaterials;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.TagKey;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
 public class SnifferEggshellKnife extends KnifeItem {
     public SnifferEggshellKnife() {
-        super(new Tier() {
-            public int getUses() {
+        super(new ToolMaterial() {
+            public int getDurability() {
                 return 197;
             }
 
-            public float getSpeed() {
+            public float getMiningSpeedMultiplier() {
                 return 9f;
             }
 
-            public float getAttackDamageBonus() {
+            public float getAttackDamage() {
                 return 4.5f;
             }
 
             @Override
-            public TagKey<Block> getIncorrectBlocksForDrops() {
+            public TagKey<Block> getInverseTag() {
                 return BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
             }
 
-            public int getEnchantmentValue() {
+            public int getLevel() {
+                return 2;
+            }
+
+            public int getEnchantability() {
                 return 26;
             }
 
             public Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.ofStacks();
             }
-        }, new Properties()/*.rarity(TrailAndTalesDelightMod.ANCIENT)*/.attributes(createAttributes(Tiers.DIAMOND, 1, -2f)));
+        }, new Item.Settings()/*.rarity(TrailAndTalesDelightMod.ANCIENT)*/.attributeModifiers(createAttributeModifiers(ToolMaterials.DIAMOND, 1, -2f)));
     }
 }

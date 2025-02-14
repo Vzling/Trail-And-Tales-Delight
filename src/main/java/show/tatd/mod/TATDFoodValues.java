@@ -1,8 +1,8 @@
 package show.tatd.mod;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.food.FoodProperties;
+import net.minecraft.component.type.FoodComponent;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import vectorwing.farmersdelight.common.registry.ModEffects;
 
 public class TATDFoodValues {
@@ -15,78 +15,78 @@ public class TATDFoodValues {
     public static final int SUPER_LONG_DURATION = 24000;    // 20 minutes
 
     // Feast Portions
-    public static final FoodProperties FRIED_SNIFFER_EGG = new FoodProperties.Builder()
+    public static final FoodComponent FRIED_SNIFFER_EGG = new FoodComponent.Builder()
             .nutrition(6).saturationModifier(0.6f)
             .build();
-    public static final FoodProperties CHEESE_PIE_SLICE = new FoodProperties.Builder()
+    public static final FoodComponent CHEESE_PIE_SLICE = new FoodComponent.Builder()
             .nutrition(3).saturationModifier(0.5f)
-            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, FIFE_SECONDS, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, FIFE_SECONDS, 0), 1.0F)
             .build();
-    public static final FoodProperties CHERRY_CAKE_SLICE = new FoodProperties.Builder()
+    public static final FoodComponent CHERRY_CAKE_SLICE = new FoodComponent.Builder()
             .nutrition(4).saturationModifier(1f)
-            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, FIFE_SECONDS, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, FIFE_SECONDS, 0), 1.0F)
             .build();
-    public static final FoodProperties STUFFED_SNIFFER_EGG = (new FoodProperties.Builder())
+    public static final FoodComponent STUFFED_SNIFFER_EGG = (new FoodComponent.Builder())
             .nutrition(16).saturationModifier(1f)
-            .effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, LONG_DURATION, 0), 1.0F).build();
-    public static final FoodProperties CHEESE_SLICE = new FoodProperties.Builder()
+            .statusEffect(new StatusEffectInstance(ModEffects.NOURISHMENT, LONG_DURATION, 0), 1.0F).build();
+    public static final FoodComponent CHEESE_SLICE = new FoodComponent.Builder()
             .nutrition(5).saturationModifier(0.5f)
             .build();
-    public static final FoodProperties CHERRY_CHEESE_SLICE = new FoodProperties.Builder()
+    public static final FoodComponent CHERRY_CHEESE_SLICE = new FoodComponent.Builder()
             .nutrition(6).saturationModifier(0.5f)
-            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, FIFE_SECONDS, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, FIFE_SECONDS, 0), 1.0F)
             .build();
-    public static final FoodProperties PITCHER_POD = new FoodProperties.Builder()
+    public static final FoodComponent PITCHER_POD = new FoodComponent.Builder()
             .nutrition(1).saturationModifier(0.5f)
-            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, TEN_SECONDS, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, TEN_SECONDS, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties TORCHFLOWER_SEEDS = new FoodProperties.Builder()
+    public static final FoodComponent TORCHFLOWER_SEEDS = new FoodComponent.Builder()
             .nutrition(1).saturationModifier(0.5f)
-            .effect(() -> new MobEffectInstance(MobEffects.SLOW_FALLING, TEN_SECONDS, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, TEN_SECONDS, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties ANCIENT_COFFEE = new FoodProperties.Builder()
-            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, MEDIUM_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(MobEffects.SLOW_FALLING, MEDIUM_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
+    public static final FoodComponent ANCIENT_COFFEE = new FoodComponent.Builder()
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, MEDIUM_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, MEDIUM_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties TORCHFLOWER_TEA = new FoodProperties.Builder()
-            .effect(() -> new MobEffectInstance(MobEffects.SLOW_FALLING, SHORT_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
+    public static final FoodComponent TORCHFLOWER_TEA = new FoodComponent.Builder()
+            .statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, SHORT_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties PITCHER_PLANT_TEA = new FoodProperties.Builder()
-            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, SHORT_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
+    public static final FoodComponent PITCHER_PLANT_TEA = new FoodComponent.Builder()
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, SHORT_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties CHERRY_PETAL_TEA = new FoodProperties.Builder()
-            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, BRIEF_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
+    public static final FoodComponent CHERRY_PETAL_TEA = new FoodComponent.Builder()
+            .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, BRIEF_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(ModEffects.COMFORT, MEDIUM_DURATION, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties TARO = new FoodProperties.Builder()
+    public static final FoodComponent TARO = new FoodComponent.Builder()
             .nutrition(3).saturationModifier(0.75f)
-            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, TEN_SECONDS, 1), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, TEN_SECONDS, 1), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties COOKED_TARO = new FoodProperties.Builder()
+    public static final FoodComponent COOKED_TARO = new FoodComponent.Builder()
             .nutrition(7).saturationModifier(1f)
-            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, SHORT_DURATION, 1), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, SHORT_DURATION, 1), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties LANTERN_FRUIT = new FoodProperties.Builder()
+    public static final FoodComponent LANTERN_FRUIT = new FoodComponent.Builder()
             .nutrition(2).saturationModifier(0.5f)
-            .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, SHORT_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, SHORT_DURATION, 0), 1.0F)
             .alwaysEdible()
             .build();
-    public static final FoodProperties GOLDEN_LANTERN_FRUIT = new FoodProperties.Builder()
+    public static final FoodComponent GOLDEN_LANTERN_FRUIT = new FoodComponent.Builder()
             .nutrition(4).saturationModifier(1.5f)
-            .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MEDIUM_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, MEDIUM_DURATION, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, FIFE_SECONDS, 2), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, MEDIUM_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, MEDIUM_DURATION, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, FIFE_SECONDS, 2), 1.0F)
             .alwaysEdible()
             .build();
 }

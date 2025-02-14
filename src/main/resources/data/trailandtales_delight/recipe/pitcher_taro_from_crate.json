@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "trailandtales_delight:pitcher_taro_crate"
+    }
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "id": "trailandtales_delight:pitcher_taro",
+    "count": 9
+  },
+  "show_notification": true
+}

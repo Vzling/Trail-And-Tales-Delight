@@ -21,17 +21,14 @@
   "item.trailandtales_delight.fried_sniffer_egg": "煎嗅探兽蛋",
   "item.trailandtales_delight.stuffed_sniffer_egg": "碗装填馅嗅探兽蛋",
   "item.trailandtales_delight.sniffer_egg_soup": "碗装嗅探兽蛋浓汤",
-
   "item.trailandtales_delight.cherry_petal_tea": "樱花瓣茶",
   "item.trailandtales_delight.torchflower_tea": "火把花茶",
   "item.trailandtales_delight.pitcher_plant_tea": "瓶子草茶",
   "item.trailandtales_delight.ancient_coffee": "古韵咖啡",
-
   "block.trailandtales_delight.budding_lantern_fruit": "萌芽的灯笼果",
   "block.trailandtales_delight.lantern_fruits": "灯笼果藤蔓",
   "block.trailandtales_delight.lantern_fruit_crate": "箱装灯笼果",
   "block.trailandtales_delight.pitcher_taro_crate": "箱装瓶子芋",
-
   "block.trailandtales_delight.cheese_wheel": "奶酪轮",
   "block.trailandtales_delight.curd_block": "凝乳块",
   "block.trailandtales_delight.cherry_cake": "樱花蛋糕",
@@ -40,15 +37,11 @@
   "block.trailandtales_delight.cooked_sniffer_egg_block": "烤嗅探兽蛋",
   "block.trailandtales_delight.stuffed_sniffer_egg_block": "填馅嗅探兽蛋",
   "block.trailandtales_delight.sniffer_egg_soup_block": "嗅探兽蛋浓汤",
-
   "item.trailandtales_delight.cherry_iron_knife": "樱铁刀",
   "item.trailandtales_delight.sniffer_eggshell_knife": "嗅探兽蛋壳刀",
-
-  "block.trailandtales_delight.curd_block.tooltip":"当凝乳块处于亮度较低的环境中时，静候一段时间后会转换为奶酪轮",
-  "item.trailandtales_delight.pitcher_plant.tooltip":"仅作为原材料，在砧板中使用刀切制可获得瓶子草和瓶子芋",
-
+  "block.trailandtales_delight.curd_block.tooltip": "当凝乳块处于亮度较低的环境中时，静候一段时间后会转换为奶酪轮",
+  "item.trailandtales_delight.pitcher_plant.tooltip": "仅作为原材料，在砧板中使用刀切制可获得瓶子草和瓶子芋",
   "advancements.tat_delight.title": "樱途旅事",
   "advancements.tat_delight.descr": "伴随着樱花的清香与远古的遗韵踏上征途...",
-
   "ItemGroup.trailandtales_delight.item": "樱途旅事"
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "trailandtales_delight:pitcher_taro"
+  },
+  "result": {
+    "count": 1,
+    "id": "trailandtales_delight:cooked_pitcher_taro"
+  }
+}

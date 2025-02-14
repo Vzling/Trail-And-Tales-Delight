@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": {
+      "item": "minecraft:brick"
+    }
+  },
+  "pattern": [
+    "i i",
+    "iii"
+  ],
+  "result": {
+    "id": "trailandtales_delight:pottery_bowl",
+    "count": 2
+  },
+  "show_notification": true
+}

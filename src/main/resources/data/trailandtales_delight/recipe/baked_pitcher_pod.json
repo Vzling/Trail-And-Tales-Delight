@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "minecraft:pitcher_pod"
+  },
+  "result": {
+    "count": 1,
+    "id": "trailandtales_delight:baked_pitcher_pod"
+  }
+}

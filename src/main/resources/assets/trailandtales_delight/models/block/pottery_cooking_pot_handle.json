@@ -1,92 +1,325 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "block/block",
-	"render_type": "minecraft:cutout",
-	"textures": {
-		"4": "trailandtales_delight:block/pottery_cooking_pot_head",
-		"top": "trailandtales_delight:block/pottery_cooking_pot_top",
-		"particle": "trailandtales_delight:block/pottery_cooking_pot_side",
-		"side": "trailandtales_delight:block/pottery_cooking_pot_side",
-		"bottom": "trailandtales_delight:block/pottery_cooking_pot_bottom",
-		"handle": "farmersdelight:block/cooking_pot_handle"
-	},
-	"elements": [
-		{
-			"name": "pot",
-			"from": [2, 0, 2],
-			"to": [14, 10, 14],
-			"faces": {
-				"north": {"uv": [2, 6, 14, 16], "texture": "#side"},
-				"east": {"uv": [2, 6, 14, 16], "texture": "#side"},
-				"south": {"uv": [2, 6, 14, 16], "texture": "#side"},
-				"west": {"uv": [2, 6, 14, 16], "texture": "#side"},
-				"up": {"uv": [2, 2, 14, 14], "texture": "#top"},
-				"down": {"uv": [2, 2, 14, 14], "texture": "#bottom", "cullface": "down"}
-			}
-		},
-		{
-			"name": "top",
-			"from": [4, 10, 4],
-			"to": [12, 13, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [4, 10, 4]},
-			"faces": {
-				"north": {"uv": [8, 0, 16, 3], "texture": "#4"},
-				"east": {"uv": [8, 3, 16, 6], "texture": "#4"},
-				"south": {"uv": [8, 6, 16, 9], "texture": "#4"},
-				"west": {"uv": [8, 9, 16, 12], "texture": "#4"},
-				"up": {"uv": [8, 8, 0, 0], "texture": "#4"},
-				"down": {"uv": [8, 8, 0, 16], "texture": "#4"}
-			}
-		},
-		{
-			"name": "hoop",
-			"from": [1, 8, 8],
-			"to": [15, 16, 8],
-			"faces": {
-				"north": {"uv": [1, 8, 15, 16], "texture": "#handle"},
-				"south": {"uv": [1, 8, 15, 16], "texture": "#handle"}
-			}
-		},
-		{
-			"name": "handle east",
-			"from": [15, 8, 7],
-			"to": [15, 16, 9],
-			"faces": {
-				"east": {"uv": [2, 0, 0, 8], "texture": "#handle"},
-				"west": {"uv": [0, 0, 2, 8], "texture": "#handle"}
-			}
-		},
-		{
-			"name": "handle west",
-			"from": [1, 8, 7],
-			"to": [1, 16, 9],
-			"faces": {
-				"east": {"uv": [2, 0, 0, 8], "texture": "#handle"},
-				"west": {"uv": [0, 0, 2, 8], "texture": "#handle"}
-			}
-		},
-		{
-			"name": "handle up",
-			"from": [1, 15.999, 7],
-			"to": [15, 15.999, 9],
-			"faces": {
-				"up": {"uv": [2, 0, 16, 2], "texture": "#handle"},
-				"down": {"uv": [2, 0, 16, 2], "texture": "#handle"}
-			}
-		}
-	],
-	"groups": [
-		{
-			"name": "cooking pot",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [0, 1]
-		},
-		{
-			"name": "handle",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [2, 3, 4, 5]
-		}
-	]
+  "credit": "Made with Blockbench",
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "4": "trailandtales_delight:block/pottery_cooking_pot_head",
+    "top": "trailandtales_delight:block/pottery_cooking_pot_top",
+    "particle": "trailandtales_delight:block/pottery_cooking_pot_side",
+    "side": "trailandtales_delight:block/pottery_cooking_pot_side",
+    "bottom": "trailandtales_delight:block/pottery_cooking_pot_bottom",
+    "handle": "farmersdelight:block/cooking_pot_handle"
+  },
+  "elements": [
+    {
+      "name": "pot",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        10,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            6,
+            14,
+            16
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            2,
+            6,
+            14,
+            16
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            2,
+            6,
+            14,
+            16
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            2,
+            6,
+            14,
+            16
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#bottom",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "name": "top",
+      "from": [
+        4,
+        10,
+        4
+      ],
+      "to": [
+        12,
+        13,
+        12
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          4,
+          10,
+          4
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            0,
+            16,
+            3
+          ],
+          "texture": "#4"
+        },
+        "east": {
+          "uv": [
+            8,
+            3,
+            16,
+            6
+          ],
+          "texture": "#4"
+        },
+        "south": {
+          "uv": [
+            8,
+            6,
+            16,
+            9
+          ],
+          "texture": "#4"
+        },
+        "west": {
+          "uv": [
+            8,
+            9,
+            16,
+            12
+          ],
+          "texture": "#4"
+        },
+        "up": {
+          "uv": [
+            8,
+            8,
+            0,
+            0
+          ],
+          "texture": "#4"
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            0,
+            16
+          ],
+          "texture": "#4"
+        }
+      }
+    },
+    {
+      "name": "hoop",
+      "from": [
+        1,
+        8,
+        8
+      ],
+      "to": [
+        15,
+        16,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            8,
+            15,
+            16
+          ],
+          "texture": "#handle"
+        },
+        "south": {
+          "uv": [
+            1,
+            8,
+            15,
+            16
+          ],
+          "texture": "#handle"
+        }
+      }
+    },
+    {
+      "name": "handle east",
+      "from": [
+        15,
+        8,
+        7
+      ],
+      "to": [
+        15,
+        16,
+        9
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            2,
+            0,
+            0,
+            8
+          ],
+          "texture": "#handle"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            8
+          ],
+          "texture": "#handle"
+        }
+      }
+    },
+    {
+      "name": "handle west",
+      "from": [
+        1,
+        8,
+        7
+      ],
+      "to": [
+        1,
+        16,
+        9
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            2,
+            0,
+            0,
+            8
+          ],
+          "texture": "#handle"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            8
+          ],
+          "texture": "#handle"
+        }
+      }
+    },
+    {
+      "name": "handle up",
+      "from": [
+        1,
+        15.999,
+        7
+      ],
+      "to": [
+        15,
+        15.999,
+        9
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            2,
+            0,
+            16,
+            2
+          ],
+          "texture": "#handle"
+        },
+        "down": {
+          "uv": [
+            2,
+            0,
+            16,
+            2
+          ],
+          "texture": "#handle"
+        }
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "cooking pot",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "color": 0,
+      "children": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "handle",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "color": 0,
+      "children": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
 }

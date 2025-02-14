@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "L": {
+      "item": "trailandtales_delight:lantern_fruit"
+    }
+  },
+  "pattern": [
+    "###",
+    "#L#",
+    "###"
+  ],
+  "result": {
+    "id": "trailandtales_delight:golden_lantern_fruit"
+  },
+  "show_notification": true
+}

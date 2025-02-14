@@ -1,11 +1,12 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "show.tatd.mod.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "trailandtales_delight.refmap.json",
   "mixins": [
     "CookingPotBlockEntityMixin",
     "CookingPotMenuMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
