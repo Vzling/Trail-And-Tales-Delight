@@ -1,0 +1,9 @@
+{
+  "parent": "farmersdelight:block/crop_with_rope",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "crop": "trailandtales_delight:block/lantern_fruit_vine_stage2",
+    "rope_side": "trailandtales_delight:block/lantern_fruit_coiled_rope",
+    "rope_top": "farmersdelight:block/rope_top"
+  }
+}

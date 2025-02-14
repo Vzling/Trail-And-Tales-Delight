@@ -1,0 +1,33 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "trailandtales_delight:block/cherry_cake_bottom",
+		"1": "trailandtales_delight:block/cherry_cake_inner",
+		"2": "trailandtales_delight:block/cherry_cake_side",
+		"3": "trailandtales_delight:block/cherry_cake_top",
+		"particle": "trailandtales_delight:block/cherry_cake_bottom"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [8, 8, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [8, 8, 1, 16], "texture": "#2"},
+				"east": {"uv": [1, 8, 15, 16], "texture": "#1"},
+				"south": {"uv": [15, 8, 8, 16], "texture": "#2"},
+				"west": {"uv": [1, 8, 15, 16], "texture": "#2"},
+				"up": {"uv": [8, 1, 1, 15], "rotation": 180, "texture": "#3"},
+				"down": {"uv": [8, 1, 1, 15], "rotation": 180, "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

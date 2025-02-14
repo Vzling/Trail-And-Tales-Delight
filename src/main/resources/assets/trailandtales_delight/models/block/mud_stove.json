@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "trailandtales_delight:block/mud_stove_bottom",
+    "front": "trailandtales_delight:block/mud_stove_front",
+    "side": "trailandtales_delight:block/mud_stove_side",
+    "top": "trailandtales_delight:block/mud_stove_top"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "trailandtales_delight:item/sniffer_eggshell_knife"
+  }
+}

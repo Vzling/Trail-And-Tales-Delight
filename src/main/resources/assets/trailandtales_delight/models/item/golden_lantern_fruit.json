@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "trailandtales_delight:item/golden_lantern_fruit"
+  }
+}
