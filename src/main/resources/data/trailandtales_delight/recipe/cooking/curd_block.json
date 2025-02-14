@@ -1,0 +1,39 @@
+{
+  "type": "farmersdelight:cooking",
+  "cookingtime": 600,
+  "experience": 0.8,
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    [
+      {
+        "item": "minecraft:sugar"
+      },
+      {
+        "item": "minecraft:honey_bottle"
+      }
+    ],
+    [
+      {
+        "item": "minecraft:sugar"
+      },
+      {
+        "item": "minecraft:honey_bottle"
+      }
+    ]
+  ],
+  "recipe_book_tab": "misc",
+  "result": {
+    "item": "trailandtales_delight:curd_block"
+  }
+}
