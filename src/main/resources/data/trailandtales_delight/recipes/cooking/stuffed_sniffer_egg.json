@@ -1,0 +1,32 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:pumpkin"
+  },
+  "cookingtime": 600,
+  "experience": 2.0,
+  "ingredients": [
+    {
+      "tag": "forge:crops/rice"
+    },
+    {
+      "tag": "forge:crops/onion"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "tag": "forge:berries"
+    },
+    {
+      "tag": "forge:vegetables"
+    }
+  ],
+  "recipe_book_tab": "meals",
+  "result": {
+    "item": "trailandtales_delight:stuffed_sniffer_egg_block"
+  }
+}

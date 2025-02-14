@@ -1,40 +1,41 @@
 package show.tatd.mod.block;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Fertilizable;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import show.tatd.mod.init.ModBlock;
 import show.tatd.mod.init.ModItem;
 import vectorwing.farmersdelight.common.block.BuddingBushBlock;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
 
-public class BuddingLanternFruitBlock extends BuddingBushBlock implements BonemealableBlock {
-    public BuddingLanternFruitBlock(Properties properties) {
+public class BuddingLanternFruitBlock extends BuddingBushBlock implements Fertilizable {
+    public BuddingLanternFruitBlock(AbstractBlock.Settings properties) {
         super(properties);
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(ModBlocks.RICH_SOIL_FARMLAND.get()) || pState.is(Blocks.FARMLAND);
+    public boolean canPlantOnTop(BlockState pState, BlockView pLevel, BlockPos pPos) {
+        return pState.getBlock().equals(ModBlocks.RICH_SOIL_FARMLAND.get()) || pState.getBlock().equals(Blocks.FARMLAND);
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (state.getValue(BuddingBushBlock.AGE) == 4) {
-            level.setBlock(currentPos, ModBlock.LANTERN_FRUIT_CROP.get().defaultBlockState(), 3);
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState facingState, WorldAccess level, BlockPos currentPos, BlockPos facingPos) {
+        if (state.get(BuddingBushBlock.AGE) == 4) {
+            level.setBlockState(currentPos, ModBlock.LANTERN_FRUIT_CROP.getDefaultState(), 3);
         }
-        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        return super.getStateForNeighborUpdate(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -43,38 +44,38 @@ public class BuddingLanternFruitBlock extends BuddingBushBlock implements Boneme
     }
 
     @Override
-    public void growPastMaxAge(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        level.setBlockAndUpdate(pos, ModBlock.LANTERN_FRUIT_CROP.get().defaultBlockState());
+    public void growPastMaxAge(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+        level.setBlockState(pos, ModBlock.LANTERN_FRUIT_CROP.getDefaultState());
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isFertilizable(WorldView level, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-        return new ItemStack(ModItem.LANTERN_FRUIT_SEEDS.get());
+    public ItemStack getPickStack(BlockView level, BlockPos pos, BlockState state) {
+        return new ItemStack(ModItem.LANTERN_FRUIT_SEEDS);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean canGrow(World level, Random random, BlockPos pos, BlockState state) {
         return true;
     }
 
-    protected int getBonemealAgeIncrease(Level level) {
-        return Mth.nextInt(level.random, 1, 4);
+    protected int getGrowthAmount(World level) {
+        return MathHelper.nextInt(level.random, 1, 4);
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void grow(ServerWorld level, Random random, BlockPos pos, BlockState state) {
         int maxAge = getMaxAge();
-        int ageGrowth = Math.min(getAge(state) + getBonemealAgeIncrease(level), 7);
+        int ageGrowth = Math.min(getAge(state) + getGrowthAmount(level), 7);
         if (ageGrowth <= maxAge) {
-            level.setBlockAndUpdate(pos, state.setValue(AGE, ageGrowth));
+            level.setBlockState(pos, state.with(AGE, ageGrowth));
         } else {
             int remainingGrowth = ageGrowth - maxAge - 1;
-            level.setBlockAndUpdate(pos, ModBlock.LANTERN_FRUIT_CROP.get().defaultBlockState().setValue(LanternFruitVineBlock.VINE_AGE, remainingGrowth));
+            level.setBlockState(pos, ModBlock.LANTERN_FRUIT_CROP.getDefaultState().with(LanternFruitVineBlock.VINE_AGE, remainingGrowth));
         }
     }
 }

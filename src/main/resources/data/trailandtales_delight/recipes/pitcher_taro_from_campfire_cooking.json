@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "trailandtales_delight:pitcher_taro"
+  },
+  "result": "trailandtales_delight:cooked_pitcher_taro"
+}

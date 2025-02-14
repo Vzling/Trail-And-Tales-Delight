@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "trailandtales_delight:sniffer_eggshell"
+  },
+  "base": {
+    "item": "farmersdelight:iron_knife"
+  },
+  "result": {
+    "item": "trailandtales_delight:sniffer_eggshell_knife"
+  },
+  "template": {
+    "item": "farmersdelight:rope"
+  }
+}

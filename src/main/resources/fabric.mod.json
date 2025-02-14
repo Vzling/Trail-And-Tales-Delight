@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "trailandtales_delight",
+	"version": "${version}",
+	"name": "Trail&Tales Delight",
+	"description": "This mod adds more Farmer's Delight style food and tools to Trail&Tales Update",
+	"authors": [
+		"shuixingshow",
+		"Vzling"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT License",
+	"icon": "assets/trailandtales_delight/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"show.tatd.mod.TrailAndTalesDelightMod"
+		],
+		"client": [
+			"show.tatd.mod.TrailAndTalesDelightModClient"
+		]
+	},
+	"mixins": [
+		"trailandtales_delight.mixins.json",
+		{
+			"config": "trailandtales_delight.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"farmersdelight": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	},
+	"accessWidener" : "trailandtales_delight.accesswidener"
+}

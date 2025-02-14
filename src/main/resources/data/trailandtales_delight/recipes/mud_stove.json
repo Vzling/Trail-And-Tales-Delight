@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:packed_mud"
+    },
+    "C": {
+      "item": "minecraft:campfire"
+    },
+    "W": {
+      "item": "trailandtales_delight:pottery_bowl"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BWB",
+    "BCB"
+  ],
+  "result": {
+    "item": "trailandtales_delight:mud_stove"
+  },
+  "show_notification": true
+}

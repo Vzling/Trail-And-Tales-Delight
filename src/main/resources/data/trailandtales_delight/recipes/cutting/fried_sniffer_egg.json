@@ -1,0 +1,21 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "trailandtales_delight:cooked_sniffer_egg_block"
+    }
+  ],
+  "result": [
+    {
+      "count": 1,
+      "item": "trailandtales_delight:sniffer_eggshell"
+    },
+    {
+      "count": 1,
+      "item": "trailandtales_delight:fried_sniffer_egg"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

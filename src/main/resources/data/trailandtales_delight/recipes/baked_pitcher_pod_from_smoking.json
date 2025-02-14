@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "minecraft:pitcher_pod"
+  },
+  "result": "trailandtales_delight:baked_pitcher_pod"
+}

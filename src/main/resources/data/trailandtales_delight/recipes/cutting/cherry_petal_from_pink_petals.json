@@ -1,0 +1,17 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "minecraft:pink_petals"
+    }
+  ],
+  "result": [
+    {
+      "count": 1,
+      "item": "trailandtales_delight:cherry_petal"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

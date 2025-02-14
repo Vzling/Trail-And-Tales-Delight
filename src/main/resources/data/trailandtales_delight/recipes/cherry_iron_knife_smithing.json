@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "trailandtales_delight:cherry_petal"
+  },
+  "base": {
+    "item": "farmersdelight:iron_knife"
+  },
+  "result": {
+    "item": "trailandtales_delight:cherry_iron_knife"
+  },
+  "template": {
+    "item": "trailandtales_delight:cherry_petal"
+  }
+}

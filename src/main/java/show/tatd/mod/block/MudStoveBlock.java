@@ -1,56 +1,57 @@
 package show.tatd.mod.block;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CampfireBlock;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import vectorwing.farmersdelight.common.block.StoveBlock;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 
 public class MudStoveBlock extends StoveBlock {
 
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty LIT = Properties.LIT;
+    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
     public MudStoveBlock() {
-        super(Properties.of().sound(SoundType.NETHERITE_BLOCK).lightLevel(s -> 15).strength(2f, 5f).requiresCorrectToolForDrops().sound(SoundType.MUD));
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+        super(AbstractBlock.Settings.create().sounds(BlockSoundGroup.NETHERITE).luminance(s -> 15).strength(2f, 5f).requiresTool().sounds(BlockSoundGroup.MUD));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, net.minecraft.util.math.Direction.NORTH).with(LIT, false));
     }
 
-    public void extinguish(BlockState state, Level level, BlockPos pos) {
-        level.setBlock(pos, state.setValue(LIT, false), 2);
+    public void extinguish(BlockState state, World level, BlockPos pos) {
+        level.setBlockState(pos, state.with(LIT, false), 2);
         double x = (double) pos.getX() + 0.5D;
         double y = pos.getY();
         double z = (double) pos.getZ() + 0.5D;
-        level.playLocalSound(x, y, z, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F, false);
+        level.playSound(x, y, z, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F, false);
     }
 
     @Override
-    public void animateTick(BlockState stateIn, Level level, BlockPos pos, RandomSource rand) {
-        if (stateIn.getValue(CampfireBlock.LIT)) {
+    public void randomDisplayTick(BlockState stateIn, World level, BlockPos pos, Random rand) {
+        if (stateIn.get(CampfireBlock.LIT)) {
             double x = (double) pos.getX() + 0.5D;
             double y = pos.getY();
             double z = (double) pos.getZ() + 0.5D;
             if (rand.nextInt(10) == 0) {
-                level.playLocalSound(x, y, z, ModSounds.BLOCK_STOVE_CRACKLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                level.playSound(x, y, z, ModSounds.BLOCK_STOVE_CRACKLE.get(), SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
 
-            Direction direction = stateIn.getValue(HorizontalDirectionalBlock.FACING);
+            Direction direction = stateIn.get(HorizontalFacingBlock.FACING);
             Direction.Axis direction$axis = direction.getAxis();
             double horizontalOffset = rand.nextDouble() * 0.6D - 0.3D;
-            double xOffset = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52D : horizontalOffset;
+            double xOffset = direction$axis == Direction.Axis.X ? (double) direction.getOffsetX() * 0.52D : horizontalOffset;
             double yOffset = rand.nextDouble() * 6.0D / 16.0D;
-            double zOffset = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52D : horizontalOffset;
+            double zOffset = direction$axis == Direction.Axis.Z ? (double) direction.getOffsetZ() * 0.52D : horizontalOffset;
             level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
             level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
         }

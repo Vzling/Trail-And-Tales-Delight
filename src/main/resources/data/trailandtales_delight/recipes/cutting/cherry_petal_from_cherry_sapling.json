@@ -1,0 +1,21 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "minecraft:cherry_sapling"
+    }
+  ],
+  "result": [
+    {
+      "count": 4,
+      "item": "trailandtales_delight:cherry_petal"
+    },
+    {
+      "count": 1,
+      "item": "minecraft:stick"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

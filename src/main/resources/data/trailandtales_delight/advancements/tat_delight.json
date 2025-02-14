@@ -1,0 +1,23 @@
+{
+  "display": {
+    "background": "trailandtales_delight:textures/screen/advancement_background.png",
+    "icon": {
+      "item": "trailandtales_delight:pottery_cooking_pot"
+    },
+    "title": {
+      "translate": "advancements.tat_delight.title"
+    },
+    "description": {
+      "translate": "advancements.tat_delight.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "trail_and_tales": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

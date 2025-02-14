@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "trailandtales_delight:pitcher_plant"
+    }
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "item": "minecraft:pitcher_pod",
+    "count": 2
+  },
+  "show_notification": true
+}
