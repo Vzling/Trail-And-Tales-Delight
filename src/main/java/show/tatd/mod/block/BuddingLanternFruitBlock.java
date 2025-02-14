@@ -25,11 +25,6 @@ public class BuddingLanternFruitBlock extends BuddingBushBlock implements Boneme
     }
 
     @Override
-    public BlockState getPlant(BlockGetter world, BlockPos pos) {
-        return ModBlock.BUDDING_LANTERN_FRUIT_CROP.get().defaultBlockState();
-    }
-
-    @Override
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         return pState.is(ModBlocks.RICH_SOIL_FARMLAND.get()) || pState.is(Blocks.FARMLAND);
     }
@@ -53,12 +48,12 @@ public class BuddingLanternFruitBlock extends BuddingBushBlock implements Boneme
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         return new ItemStack(ModItem.LANTERN_FRUIT_SEEDS.get());
     }
 

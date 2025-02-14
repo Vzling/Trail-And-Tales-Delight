@@ -4,7 +4,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.RecipeBookMenu;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,7 +17,7 @@ import show.tatd.mod.init.ModBlock;
 import vectorwing.farmersdelight.common.block.entity.container.CookingPotMenu;
 
 @Mixin(CookingPotMenu.class)
-public abstract class CookingPotMenuMixin extends RecipeBookMenu<RecipeWrapper> {
+public abstract class CookingPotMenuMixin extends RecipeBookMenu<RecipeInput, Recipe<RecipeInput>> {
 
     @Shadow(remap = false)
     @Final
@@ -25,7 +27,7 @@ public abstract class CookingPotMenuMixin extends RecipeBookMenu<RecipeWrapper> 
         super(pMenuType, pContainerId);
     }
 
-    @Inject(at = @At("HEAD"), method = "m_6875_", cancellable = true, remap = false)
+    @Inject(at = @At("HEAD"), method = "stillValid", cancellable = true, remap = false)
     public void addBlock(Player player, CallbackInfoReturnable<Boolean> cir) {
         if (stillValid(canInteractWithCallable, player, ModBlock.POTTERY_COOKING_POT.get())) {
             cir.setReturnValue(true);

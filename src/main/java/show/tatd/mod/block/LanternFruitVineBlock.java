@@ -2,6 +2,7 @@ package show.tatd.mod.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -10,6 +11,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,13 +28,12 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.CommonHooks;
 import show.tatd.mod.init.ModBlock;
 import show.tatd.mod.init.ModItem;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.block.TomatoVineBlock;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
-import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
@@ -50,18 +51,18 @@ public class LanternFruitVineBlock extends CropBlock {
     }
 
     public static void destroyAndPlaceRope(Level level, BlockPos pos) {
-        Block configuredRopeBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Configuration.DEFAULT_TOMATO_VINE_ROPE.get()));
+        Block configuredRopeBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(Configuration.DEFAULT_TOMATO_VINE_ROPE.get()));
         Block finalRopeBlock = configuredRopeBlock != null ? configuredRopeBlock : ModBlocks.ROPE.get();
 
         level.setBlockAndUpdate(pos, finalRopeBlock.defaultBlockState());
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int age = state.getValue(getAgeProperty());
         boolean isMature = age == getMaxAge();
         if (!isMature && player.getItemInHand(hand).is(Items.BONE_MEAL)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         } else if (isMature) {
             int quantity = 1 + level.random.nextInt(2);
             popResource(level, pos, new ItemStack(ModItem.LANTERN_FRUIT.get(), quantity));
@@ -72,9 +73,9 @@ public class LanternFruitVineBlock extends CropBlock {
             }
 
             level.setBlock(pos, state.setValue(getAgeProperty(), 0), 2);
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         } else {
-            return super.use(state, level, pos, player, hand, hit);
+            return super.useItemOn(stack, state, level, pos, player, hand, hit);
         }
     }
 
@@ -88,10 +89,10 @@ public class LanternFruitVineBlock extends CropBlock {
         if (level.getRawBrightness(pos, 0) >= 9) {
             int age = this.getAge(state);
             if (age < this.getMaxAge()) {
-                float speed = getGrowthSpeed(this, level, pos);
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt((int) (25.0F / speed) + 1) == 0)) {
+                float speed = getGrowthSpeed(this.defaultBlockState(), level, pos);
+                if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / speed) + 1) == 0)) {
                     level.setBlock(pos, state.setValue(getAgeProperty(), age + 1), 2);
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
+                    CommonHooks.fireCropGrowPost(level, pos, state);
                 }
             }
             attemptRopeClimb(level, pos, random);
@@ -172,7 +173,7 @@ public class LanternFruitVineBlock extends CropBlock {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
 
-        if (state.getValue(TomatoVineBlock.ROPELOGGED)) {
+        if (state.getValue(ROPELOGGED)) {
             return belowState.is(ModBlock.LANTERN_FRUIT_CROP.get()) && hasGoodCropConditions(level, pos);
         }
 
@@ -185,7 +186,7 @@ public class LanternFruitVineBlock extends CropBlock {
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
-        boolean isRopelogged = state.getValue(TomatoVineBlock.ROPELOGGED);
+        boolean isRopelogged = state.getValue(ROPELOGGED);
         super.playerDestroy(level, player, pos, state, blockEntity, stack);
 
         if (isRopelogged) {
@@ -206,7 +207,7 @@ public class LanternFruitVineBlock extends CropBlock {
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!state.canSurvive(level, pos)) {
             level.destroyBlock(pos, true);
-            if (state.getValue(TomatoVineBlock.ROPELOGGED)) {
+            if (state.getValue(ROPELOGGED)) {
                 destroyAndPlaceRope(level, pos);
             }
         }

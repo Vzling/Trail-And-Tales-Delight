@@ -4,14 +4,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import show.tatd.mod.TrailAndTalesDelightMod;
 
 public class ModTab {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TrailAndTalesDelightMod.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> MOD_TAB = TABS.register("item",
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MOD_TAB = TABS.register("item",
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("ItemGroup.trailandtales_delight.item"))
                     .icon(() -> new ItemStack(ModItem.MUD_STOVE.get()))

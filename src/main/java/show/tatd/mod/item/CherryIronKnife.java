@@ -1,8 +1,12 @@
 package show.tatd.mod.item;
 
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
 public class CherryIronKnife extends KnifeItem {
@@ -20,8 +24,9 @@ public class CherryIronKnife extends KnifeItem {
                 return 2.5f;
             }
 
-            public int getLevel() {
-                return 2;
+            @Override
+            public TagKey<Block> getIncorrectBlocksForDrops() {
+                return BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
             }
 
             public int getEnchantmentValue() {
@@ -31,6 +36,6 @@ public class CherryIronKnife extends KnifeItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
-        }, 1, -2f, new Properties().rarity(Rarity.EPIC));
+        },new Properties().rarity(Rarity.EPIC).attributes(createAttributes(Tiers.DIAMOND, 1, -2f)));
     }
 }

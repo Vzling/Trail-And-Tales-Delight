@@ -2,11 +2,13 @@ package show.tatd.mod.block;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -72,21 +74,22 @@ public class CurdBlock extends Block {
                 double x = (double) pos.getX() + 0.5D + (random.nextDouble() * 0.6D - 0.3D);
                 double y = (double) pos.getY() + 0.8D;
                 double z = (double) pos.getZ() + 0.5D + (random.nextDouble() * 0.6D - 0.3D);
-                level.addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, x, y, z, 1.0, 0.95, 0.8);
+                level.addParticle(ParticleTypes.EFFECT, x, y, z, 1.0, 0.95, 0.8);
             }
             if (random.nextFloat() < 0.05F) {
                 double x = (double) pos.getX() + 0.5D + (random.nextDouble() * 0.6D - 0.3D);
                 double y = (double) pos.getY() + 0.8D;
                 double z = (double) pos.getZ() + 0.5D + (random.nextDouble() * 0.6D - 0.3D);
-                level.addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, x, y, z, 1.0, 0.95, 0.8);
+                level.addParticle(ParticleTypes.EFFECT, x, y, z, 1.0, 0.95, 0.8);
             }
         }
     }
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(stack, level, list, flag);
-        list.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        tooltipComponents.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
     }
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
